@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 jobs:
   build-and-test:
+    name: Test on Cloud Runner
     runs-on: ubuntu-latest
     steps:
     - name: Checkout AutoGPT repository
@@ -13,7 +14,7 @@ jobs:
         ref: v0.2.2
         path: autogpt
         
-    - name: Set up Python 3.10
+    - name: Setup Python 3.10
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
@@ -25,7 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: setup-docker
+    - name: Setup Docker
       uses: docker-practice/actions-setup-docker@1.0.11
 
     - name: Ensure Docker is running
