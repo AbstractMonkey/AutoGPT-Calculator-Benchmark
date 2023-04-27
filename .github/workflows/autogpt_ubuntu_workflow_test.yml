@@ -78,4 +78,4 @@ jobs:
             "y -15"
             "n"
           )
-          printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g'
+          printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
