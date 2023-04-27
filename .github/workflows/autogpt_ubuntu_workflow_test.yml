@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Version of Auto-GPT (branch or ref) to checkout'
+        description: 'Version of Auto-GPT (branch or ref) to checkout:'
         required: false
         default: 'v0.2.2'
 
