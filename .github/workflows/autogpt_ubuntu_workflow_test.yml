@@ -43,8 +43,11 @@ jobs:
       working-directory: autogpt
       run: |
         templateContent=$(cat .env.template)
-        apiKeyReplacement=${templateContent/your-openai-api-key/${{ secrets.OPENAI_API_KEY }}}
-        configContent=${apiKeyReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
+        openAIapiKeyReplacement=${templateContent/your-openai-api-key/${{ secrets.OPENAI_API_KEY }}}
+        huggingfaceApiTokenReplacement=${openAIapiKeyReplacement/your-huggingface-api-token/${{ secrets.HUGGINGFACE_API_TOKEN }}}
+        googleApiKeyReplacement=${huggingfaceApiTokenReplacement/your-google-api-key/${{ secrets.GOOGLE_API_KEY }}}
+        customSearchEngineIdReplacement=${googleApiKeyReplacement/your-custom-search-engine-id/${{ secrets.CUSTOM_SEARCH_ENGINE_ID }}}
+        configContent=${customSearchEngineIdReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
         echo "$configContent" > .env
 
     - name: Create auto-gpt.json file
