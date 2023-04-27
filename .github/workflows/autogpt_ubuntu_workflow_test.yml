@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-test:
-    name: Test on Cloud Runner with ${{ github.event.inputs.ref }}  # Dynamically name the job based on the Auto-GPT version being tested
+    name: Test version ${{ github.event.inputs.ref }} on cloud runner  # Dynamically name the job based on the Auto-GPT version being tested
     runs-on: ubuntu-latest
     steps:
       - name: Checkout AutoGPT repository
