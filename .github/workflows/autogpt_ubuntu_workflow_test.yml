@@ -39,7 +39,7 @@ jobs:
         run: |
           docker info
 
-      - name: Configure .env file. Populate OpenAI, Huggingface, Google Custom Search API keys and CUSTOM_SEARCH_ID. Config EXECUTE_LOCAL_COMMANDS to True.
+      - name: Configure .env file # Populate OpenAI, Huggingface, Google Custom Search API keys and CUSTOM_SEARCH_ID. Config EXECUTE_LOCAL_COMMANDS to True.
         working-directory: autogpt
         run: |
           templateContent=$(cat .env.template)
@@ -78,4 +78,4 @@ jobs:
             "y -15"
             "n"
           )
-          printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\/ Thinking\.\.\.//g' -e 's/\| Thinking\.\.\.//g' -e 's/\\ Thinking\.\.\.//g'
+          printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g'
