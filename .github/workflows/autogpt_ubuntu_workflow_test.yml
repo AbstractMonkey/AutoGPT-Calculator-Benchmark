@@ -1,18 +1,24 @@
 name: AutoGPT Ubuntu Workflow *TEST*
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Version of Auto-GPT (branch or ref) to checkout. Default is v0.2.2'
+        required: false
+        default: 'v0.2.2'
 
 jobs:
   build-and-test:
-    name: Test on Cloud Runner
+    name: Test on Cloud Runner with ${{ github.event.inputs.ref }}  # Dynamically name the job based on the Auto-GPT version being tested
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout AutoGPT repository
-      uses: actions/checkout@v2
-      with:
-        repository: Significant-Gravitas/Auto-GPT
-        ref: v0.2.2
-        path: autogpt
+      - name: Checkout AutoGPT repository
+        uses: actions/checkout@v2
+        with:
+          repository: Significant-Gravitas/Auto-GPT
+          ref: ${{ github.event.inputs.ref }}
+          path: autogpt
         
     - name: Setup Python 3.10
       uses: actions/setup-python@v2
