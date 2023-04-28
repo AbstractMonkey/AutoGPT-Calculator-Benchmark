@@ -23,25 +23,15 @@ jobs:
           repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
           path: autogpt-calculator-benchmark
           
-      - name: Update
-        run: |
-          sudo apt-get update && sudo apt-get dist-upgrade
-          sudo apt-get install tree
-          
-      - name: Check tree version
-        run: |
-          tree --version 
-          
-      - name: Create filesystem tree file
-        run: |
-          sudo apt-get install tree
-          tree $HOME -d / > filesystem_directory_tree.txt
-
-      - name: Upload filesystem tree artifact
-        uses: actions/upload-artifact@v2
+      - name: Checkout AutoGPT repository
+        uses: actions/checkout@v2
         with:
-          name: filesystem_tree
-          path: filesystem_directory_tree.txt
+          repository: Significant-Gravitas/Auto-GPT
+          path: autogpt
+          
+      - name: List all files
+        run: |
+          ls -a
 
       - name: Test calculator-gpt.py script
         working-directory: autogpt/auto_gpt_workspace
