@@ -59,7 +59,7 @@ jobs:
       - name: Run PyTest to evaluate Auto-GPT coverage
         working-directory: autogpt
         run: |
-          pytest --cov=autogpt --verbose tests/
+          pytest --verbose --cov-report term-missing --cov-branch --cov-report xml --cov-report term tests/
         timeout-minutes: 2
         continue-on-error: true
         if: ${{ job.completed_at }} != null && duration.seconds < 90 # If the test isn't complete at 90 seconds, terminate it and continue
