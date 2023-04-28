@@ -10,7 +10,7 @@ on:
 env:
   # https://github.com/tox-dev/tox/issues/1468
   python-version: '3.10'
-  PY_COLORS: 1
+  PY_COLORS: 1 # Enable colors for PyTest
 
 jobs:
   build-and-test:
