@@ -93,29 +93,14 @@ jobs:
           repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
           path: autogpt-calculator-benchmark
           
-      - name: Copy calculator-gpt-tests.txt to the auto_gpt_workspace
+      - name: Copy calculator-gpt files to the auto_gpt_workspace
         run: |
-          cp $HOME/autogpt-calculator-benchmark/calculator-gpt-tests.txt $HOME/autogpt/auto_gpt_workspace
+          cp ../autogpt-calculator-benchmark/calculator-gpt-tests.txt ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
+          cp ../autogpt-calculator-benchmark/test_calculator_gpt.sh ../autogpt/auto_gpt_workspace/test_calculator_gpt.sh
 
       - name: Test calculator-gpt.py script
         working-directory: autogpt/auto_gpt_workspace
         run: |
-          cat ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt | xargs -I {} sh -c 'echo {}; python calculator-gpt.py {}' | tee output.txt
-          echo "Results:"
-          cat output.txt | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
-          echo "Expected:"
-          cat ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "="}' | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
-          echo "    42 = The answer to life, the universe, and everything"
-          echo ""
-          echo "Differences:"
-          diff -w -B output.txt <(cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1+$3}' | sed -e '/^[[:space:]]*$/d'; \
-                                  cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1-$3}' | sed -e '/^[[:space:]]*$/d'; \
-                                  cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1*$3}' | sed -e '/^[[:space:]]*$/d'; \
-                                  cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1/$3}' | sed -e '/^[[:space:]]*$/d' | awk '{if ($5 == 42) $5 = "The answer to life, the universe, and everything"; print $0}') | sed 's/^/    /' || true
-
-      - name: Upload calculator-gpt test results as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: calculator-gpt-output
-          path: repo/autogpt/auto_gpt_workspace/output.txt
+          bash test_calculator_gpt.sh
+  
 
