@@ -85,22 +85,26 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: auto-gpt-result
-          path: autogpt
+          path: autogpt/auto-gpt-workspace
 
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
           path: autogpt-calculator-benchmark
+          
+      - name: Copy calculator-gpt-tests.txt to the auto_gpt_workspace
+        run: |
+          cp $HOME/autogpt-calculator-benchmark/calculator-gpt-tests.txt $HOME/autogpt/auto_gpt_workspace
 
       - name: Test calculator-gpt.py script
         working-directory: autogpt/auto_gpt_workspace
         run: |
-          cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | xargs -I {} sh -c 'echo {}; python calculator-gpt.py {}' | tee output.txt
+          cat ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt | xargs -I {} sh -c 'echo {}; python calculator-gpt.py {}' | tee output.txt
           echo "Results:"
           cat output.txt | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
           echo "Expected:"
-          cat ../autogpt-calculator-benchmark/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "="}' | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
+          cat ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt | awk '{print $1, $2, $3, "="}' | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
           echo "    42 = The answer to life, the universe, and everything"
           echo ""
           echo "Differences:"
