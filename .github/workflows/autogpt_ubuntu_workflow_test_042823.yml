@@ -9,6 +9,7 @@ on:
         default: 'v0.2.2'
 env:
   # https://github.com/tox-dev/tox/issues/1468
+  python-version: '3.10'
   PY_COLORS: 1
 
 jobs:
@@ -59,7 +60,7 @@ jobs:
       - name: Run PyTest to evaluate Auto-GPT coverage
         working-directory: autogpt
         run: |
-          pytest --verbose --cov-report term-missing --cov-branch --cov-report xml --cov-report term tests/
+          pytest --cov=autogpt --verbose tests/
         timeout-minutes: 2
         continue-on-error: true
         if: ${{ job.completed_at }} != null && duration.seconds < 90 # If the test isn't complete at 90 seconds, terminate it and continue
