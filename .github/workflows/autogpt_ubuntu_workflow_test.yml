@@ -86,7 +86,7 @@ jobs:
           repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
 
       - name: Test calculator-gpt.py script
-        working-directory: repo/autogpt/auto_gpt_workspace
+        working-directory: autogpt/auto_gpt_workspace
         run: |
           cat ../../calculator-gpt-tests.txt | xargs -I {} sh -c 'echo {}; python calculator-gpt.py {}' | tee output.txt
           echo "Results:"
