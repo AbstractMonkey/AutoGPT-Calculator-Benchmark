@@ -79,3 +79,31 @@ jobs:
             "n"
           )
           printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
+
+      - name: Test calculator-gpt.py script
+        working-directory: repo/autogpt/auto_gpt_workspace
+        run: |
+          cat ../../calculator-gpt-tests.txt | xargs -I {} sh -c 'echo {}; python calculator-gpt.py {}' | tee output.txt
+          echo "Results:"
+          cat output.txt | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
+          echo "Expected:"
+          cat ../../calculator-gpt-tests.txt | awk '{print $1, $2, $3, "="}' | sed -e '/^[[:space:]]*$/d' | sed 's/^/    /'
+          echo "    42 = The answer to life, the universe, and everything"
+          echo ""
+          echo "Differences:"
+          diff -w -B output.txt <(cat ../../calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1+$3}' | sed -e '/^[[:space:]]*$/d'; \
+                                  cat ../../calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1-$3}' | sed -e '/^[[:space:]]*$/d'; \
+                                  cat ../../calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1*$3}' | sed -e '/^[[:space:]]*$/d'; \
+                                  cat ../../calculator-gpt-tests.txt | awk '{print $1, $2, $3, "=", $1/$3}' | sed -e '/^[[:space:]]*$/d' | awk '{if ($5 == 42) $5 = "The answer to life, the universe, and everything"; print $0}') | sed 's/^/    /' || true
+
+      - name: Upload calculator-gpt test results as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: calculator-gpt-output
+          path: repo/autogpt/auto_gpt_workspace/output.txt
+
