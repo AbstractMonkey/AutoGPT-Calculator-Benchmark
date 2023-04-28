@@ -1,4 +1,4 @@
-name: AutoGPT Ubuntu Workflow *TEST*
+name: AutoGPT Ubuntu Workflow 042823
 
 on:
   workflow_dispatch:
@@ -20,15 +20,9 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           path: autogpt
         
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-        
       - name: Upgrade pip and install dependencies
         working-directory: autogpt
         run: |
-          sudo apt-get update && sudo apt-get dist-upgrade
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
