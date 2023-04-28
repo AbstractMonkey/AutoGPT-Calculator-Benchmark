@@ -81,6 +81,12 @@ jobs:
           )
           printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
       
+      - name: Upload working repo as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: auto-gpt-result
+          path: autogpt
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
