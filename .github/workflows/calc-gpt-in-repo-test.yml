@@ -27,7 +27,13 @@ jobs:
         run: |
           sudo apt-get install tree
           tree -a / > filesystem_tree.txt
-          
+
+      - name: Upload filesystem tree artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: filesystem_tree
+          path: filesystem_tree.txt
+
       - name: Test calculator-gpt.py script
         working-directory: autogpt/auto_gpt_workspace
         run: |
