@@ -19,6 +19,9 @@ jobs:
           repository: Significant-Gravitas/Auto-GPT
           ref: ${{ github.event.inputs.ref }}
           path: autogpt
+          
+      - name: Check Python version
+        run: python --version
         
       - name: Upgrade pip and install dependencies
         working-directory: autogpt
