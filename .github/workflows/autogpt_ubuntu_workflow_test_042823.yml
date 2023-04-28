@@ -7,6 +7,9 @@ on:
         description: 'Version of Auto-GPT (branch or ref) to checkout:'
         required: false
         default: 'v0.2.2'
+env:
+  # https://github.com/tox-dev/tox/issues/1468
+  PY_COLORS: 1
 
 jobs:
   build-and-test:
