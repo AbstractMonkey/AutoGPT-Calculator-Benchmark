@@ -35,7 +35,7 @@ jobs:
       - name: Create filesystem tree file
         run: |
           sudo apt-get install tree
-          tree -d / > filesystem_directory_tree.txt
+          tree -d -x / > filesystem_directory_tree.txt
 
       - name: Upload filesystem tree artifact
         uses: actions/upload-artifact@v2
