@@ -17,10 +17,12 @@ jobs:
     name: Testing version ${{ github.event.inputs.ref }}  # Dynamically name the job based on the Auto-GPT version being tested
     runs-on: ubuntu-latest
     steps:
-      - name: Clean up any prior runs
+      - name: Clean up any prior runs if they exist
         run: |
-          rm -rf /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt
-    
+          if [ -d /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt ]; then
+            rm -rf /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt
+          fi
+
       - name: Checkout AutoGPT repository
         uses: actions/checkout@v2
         with:
