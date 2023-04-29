@@ -20,6 +20,6 @@ jobs:
         
     - name: Actions
       run: |
-          mkdir ../autogpt/auto_gpt_workspace
+          mkdir autogpt/auto_gpt_workspace
           cp ../autogpt-calculator-benchmark/calculator-gpt-tests.txt ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
           cp ../autogpt-calculator-benchmark/test_calculator_gpt.sh ../autogpt/auto_gpt_workspace/test_calculator_gpt.sh
