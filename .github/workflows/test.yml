@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   build-and-test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout AutoGPT repository
       uses: actions/checkout@v2
@@ -13,6 +13,13 @@ jobs:
         ref: v0.2.2
         path: autogpt
         
-    - name: List directory
+    - name: Checkout AutoGPT-Calculator-Benchmark repository
+      uses: actions/checkout@v2
+      with:
+        repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
+        
+    - name: Actions
       run: |
-        ls
+          mkdir ../autogpt/auto_gpt_workspace
+          cp ../autogpt-calculator-benchmark/calculator-gpt-tests.txt ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
+          cp ../autogpt-calculator-benchmark/test_calculator_gpt.sh ../autogpt/auto_gpt_workspace/test_calculator_gpt.sh
