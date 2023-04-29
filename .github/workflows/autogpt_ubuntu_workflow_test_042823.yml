@@ -80,7 +80,13 @@ jobs:
             "n"
           )
           printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
-      
+     
+      - name: Upload Auto-GPT repo post-state as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: post-state
+          path: autogpt
+
       - name: Fetch gpt-calculator.py
         run: |
           cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt.py /home/runner/work/calculator-gpt.py
