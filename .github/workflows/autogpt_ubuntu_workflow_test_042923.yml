@@ -8,15 +8,18 @@ on:
         required: false
         default: 'v0.2.2'
 env:
-  # https://github.com/tox-dev/tox/issues/1468
-  python-version: '3.10'
   PY_COLORS: 1 # Enable colors for PyTest
 
 jobs:
   build-and-test:
     name: Testing version ${{ github.event.inputs.ref }}  # Dynamically name the job based on the Auto-GPT version being tested
     runs-on: ubuntu-latest
-    steps:          
+    steps:
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+        
       - name: Check Python version
         run: python --version
         
