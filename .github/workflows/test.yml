@@ -20,6 +20,7 @@ jobs:
         
     - name: Actions
       run: |
+          cd $HOME
           ls -a
           
     - name: Actions
