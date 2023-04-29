@@ -22,6 +22,10 @@ jobs:
       run: |
           cd ..
           ls -a
+          cd ..
+          ls -a
+          cd ..
+          ls -a
           
     - name: Actions
       run: |
