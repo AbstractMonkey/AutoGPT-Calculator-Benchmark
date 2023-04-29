@@ -15,15 +15,7 @@ jobs:
         
     - name: Actions
       run: |
-          cd ..
-          ls -a
-          cd ..
-          ls -a
-          cd ..
-          ls -a
-          cd ../autogpt
-          ls -a
-          
+        find / -name "autogpt"
         
     - name: Checkout AutoGPT-Calculator-Benchmark repository
       uses: actions/checkout@v2
