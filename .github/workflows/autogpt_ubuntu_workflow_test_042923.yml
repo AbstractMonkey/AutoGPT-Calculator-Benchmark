@@ -14,12 +14,7 @@ jobs:
   build-and-test:
     name: Testing version ${{ github.event.inputs.ref }}  # Dynamically name the job based on the Auto-GPT version being tested
     runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-        
+    steps:        
       - name: Check Python version
         run: python --version
         
@@ -64,11 +59,6 @@ jobs:
           configLocalCommands=${customSearchEngineIdReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
           configImgProvider=${configLocalCommands/IMAGE_PROVIDER=dalle/IMAGE_PROVIDER=hf}
           echo "$configImgProvider" > .env
-          
-      - name: Create auto-gpt.json file
-        working-directory: autogpt
-        run: |
-          touch auto-gpt.json
 
       - name: Run PyTest to evaluate Auto-GPT coverage
         working-directory: autogpt
@@ -77,6 +67,11 @@ jobs:
         timeout-minutes: 2
         continue-on-error: true
         if: ${{ job.completed_at }} != null && duration.seconds < 90 # If the test isn't complete at 90 seconds, terminate it and continue
+        
+      - name: Create auto-gpt.json file
+        working-directory: autogpt
+        run: |
+          touch auto-gpt.json
 
       - name: Run AutoGPT command
         working-directory: autogpt
