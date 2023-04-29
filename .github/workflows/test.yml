@@ -13,6 +13,16 @@ jobs:
         ref: v0.2.2
         path: autogpt
         
+    - name: Actions
+      run: |
+          cd ..
+          ls -a
+          cd ..
+          ls -a
+          cd ..
+          ls -a
+          
+        
     - name: Checkout AutoGPT-Calculator-Benchmark repository
       uses: actions/checkout@v2
       with:
