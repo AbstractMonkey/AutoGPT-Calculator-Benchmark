@@ -21,6 +21,8 @@ jobs:
           ls -a
           cd ..
           ls -a
+          cd ../autogpt
+          ls -a
           
         
     - name: Checkout AutoGPT-Calculator-Benchmark repository
