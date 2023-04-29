@@ -13,26 +13,15 @@ jobs:
         ref: v0.2.2
         path: autogpt
         
-    - name: Actions
-      run: |
-        find / -name "autogpt"
-        
     - name: Checkout AutoGPT-Calculator-Benchmark repository
       uses: actions/checkout@v2
       with:
         repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
-        
-    - name: Actions
-      run: |
-          cd ..
-          ls -a
-          cd ..
-          ls -a
-          cd ..
-          ls -a
           
     - name: Actions
       run: |
           mkdir autogpt/auto_gpt_workspace
-          cp ../autogpt-calculator-benchmark/calculator-gpt-tests.txt ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
-          cp ../autogpt-calculator-benchmark/test_calculator_gpt.sh ../autogpt/auto_gpt_workspace/test_calculator_gpt.sh
+          cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/calculator-gpt-tests.txt /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
+          cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/test_calculator_gpt.sh /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/test_calculator_gpt.sh
+          cd /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/
+          ls -a
