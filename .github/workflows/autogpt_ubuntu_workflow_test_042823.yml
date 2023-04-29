@@ -20,11 +20,9 @@ jobs:
       - name: Check Python version
         run: python --version
         
-      - name: Upgrade pip and install dependencies
-        working-directory: autogpt
+      - name: Upgrade pip
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
 
       - name: Setup Docker
         uses: docker-practice/actions-setup-docker@1.0.11
@@ -45,6 +43,11 @@ jobs:
           repository: Significant-Gravitas/Auto-GPT
           ref: ${{ github.event.inputs.ref }}
           path: autogpt
+          
+      - name: Install dependencies
+        working-directory: autogpt
+        run: |
+          pip install -r requirements.txt
 
       - name: Configure .env file # Populate OpenAI, Huggingface, Google Custom Search API keys and CUSTOM_SEARCH_ID. Config EXECUTE_LOCAL_COMMANDS to True.
         working-directory: autogpt
