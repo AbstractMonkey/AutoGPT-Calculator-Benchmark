@@ -23,7 +23,7 @@ jobs:
           ls -a
           cd /home/runner/
           ls -a
-          cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt /home/runner/work/autogpt
+          cp -r /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt /home/runner/work/autogpt
         
     - name: Checkout AutoGPT-Calculator-Benchmark repository
       uses: actions/checkout@v2
