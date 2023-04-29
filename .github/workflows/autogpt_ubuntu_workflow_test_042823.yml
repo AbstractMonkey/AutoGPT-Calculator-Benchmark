@@ -81,25 +81,20 @@ jobs:
           )
           printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
       
-      - name: Upload working repo as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: auto-gpt-result
-          path: autogpt/auto-gpt-workspace
+      - name: Fetch gpt-calculator.py
+        run: |
+          cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt.py /home/runner/work/calculator-gpt.py
 
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
-          path: autogpt-calculator-benchmark
           
       - name: Copy calculator-gpt files to the auto_gpt_workspace
         run: |
-          cp ../autogpt-calculator-benchmark/calculator-gpt-tests.txt ../autogpt/auto_gpt_workspace/calculator-gpt-tests.txt
-          cp ../autogpt-calculator-benchmark/test_calculator_gpt.sh ../autogpt/auto_gpt_workspace/test_calculator_gpt.sh
+          cp /home/runner/work/calculator-gpt.py /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/calculator-gpt.py
 
       - name: Test calculator-gpt.py script
-        working-directory: autogpt/auto_gpt_workspace
         run: |
           bash test_calculator_gpt.sh
   
