@@ -20,8 +20,9 @@ jobs:
       - name: Check Python version
         run: python --version
         
-      - name: Upgrade pip
+      - name: Update Ubuntu and upgrade pip
         run: |
+          sudo apt-get update && sudo apt-get dist-upgrade
           python -m pip install --upgrade pip
 
       - name: Setup Docker
