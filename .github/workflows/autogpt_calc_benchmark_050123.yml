@@ -42,7 +42,9 @@ jobs:
         customSearchEngineIdReplacement=${googleApiKeyReplacement/your-custom-search-engine-id/${{ secrets.CUSTOM_SEARCH_ENGINE_ID }}}
         configLocalCommands=${customSearchEngineIdReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
         configImgProvider=${configLocalCommands/IMAGE_PROVIDER=dalle/IMAGE_PROVIDER=hf}
-        echo "$configImgProvider" > .env
+        ghApiKey=${configImgProvider/github_pat_123/${{ secrets.GH_API_KEY }}}
+        ghUserName=${ghApiKey/your-github-username/${{ secrets.GH_USERNAME }}}
+        echo "$ghUserName" > .env
 
     - name: Create auto-gpt.json file
       working-directory: autogpt
