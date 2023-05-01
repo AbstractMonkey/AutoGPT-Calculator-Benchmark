@@ -32,13 +32,17 @@ jobs:
       run: |
         docker info
 
-    - name: Configure .env file
+    - name: Configure .env file # Populate OpenAI, Huggingface, Google Custom Search API keys and CUSTOM_SEARCH_ID. Config EXECUTE_LOCAL_COMMANDS to True.
       working-directory: autogpt
       run: |
         templateContent=$(cat .env.template)
-        apiKeyReplacement=${templateContent/your-openai-api-key/${{ secrets.OPENAI_API_KEY }}}
-        configContent=${apiKeyReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
-        echo "$configContent" > .env
+        openAIapiKeyReplacement=${templateContent/your-openai-api-key/${{ secrets.OPENAI_API_KEY }}}
+        huggingfaceApiTokenReplacement=${openAIapiKeyReplacement/your-huggingface-api-token/${{ secrets.HUGGINGFACE_API_TOKEN }}}
+        googleApiKeyReplacement=${huggingfaceApiTokenReplacement/your-google-api-key/${{ secrets.GOOGLE_API_KEY }}}
+        customSearchEngineIdReplacement=${googleApiKeyReplacement/your-custom-search-engine-id/${{ secrets.CUSTOM_SEARCH_ENGINE_ID }}}
+        configLocalCommands=${customSearchEngineIdReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
+        configImgProvider=${configLocalCommands/IMAGE_PROVIDER=dalle/IMAGE_PROVIDER=hf}
+        echo "$configImgProvider" > .env
 
     - name: Create auto-gpt.json file
       working-directory: autogpt
