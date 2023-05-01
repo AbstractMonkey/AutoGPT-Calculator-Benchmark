@@ -1,6 +1,12 @@
-name: AutoGPT Ubuntu Workflow
+name: AutoGPT Kubernetes Workflow
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -12,12 +18,12 @@ jobs:
         repository: Significant-Gravitas/Auto-GPT
         ref: v0.2.2
         path: autogpt
-        
+
     - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
-        
+
     - name: Upgrade pip and install dependencies
       working-directory: autogpt
       run: |
@@ -49,14 +55,24 @@ jobs:
       working-directory: autogpt
       run: |
         inputSequence=(
-          "CalculatorDev-GPT"
-          "an AI designed to write a calculator app named 'calculator.py' in Python. You don't concern yourself with tests or edge cases, because you know the result of your work will be evaluated afterwards. Speed and efficiency are your utmost concerns, so you create scripts as quickly as possible without requiring user input"
-          "Create a Python file called 'calculator.py' in the auto_gpt_workspace directory"
-          "Create distinct add, subtract, multiply, and divide functions in 'calculator.py'. This Python script will be used to perform mathematical operations. Ensure that 'calculator.py' can be used in the terminal. Example usage: 'python calculator.py 5*6' example output: '30'. Example usage 2: 'python calculator.py 81/9' example 2 output: '9'"
-          "Modify the script so when the result of a calculation is ever 42, instead of outputting the result, calculator.py will output only the text string 'The answer to life, the universe, and everything'"
-          "Check 'calculator.py' for any redundancy and ensure it's clean, minimal, and readable"
+          "K8sGPT"
+          "an AI assistant that specializes in Kubernetes deployment configuration, providing expert guidance to ensure your containerized applications run smoothly and efficiently."
+          "create a kubernetes deploy.yml file, named nginxdeploy, which includes 10 instances of a container called nginx-dep and an image of nginx:1.21.1-alpine with the port TCP 80 defined."
+          "Optimize the deployment file to ensure efficient resource utilization and high availability while minimizing downtime."
+          "Implement best practices for container security and compliance to minimize risk of breaches and data loss."
+          "Troubleshoot any deployment-related issues that may arise and provide actionable recommendations for resolving them promptly."
           ""
-          "y -15"
+          "y -4"
           "n"
         )
         printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Validate deploy.yaml
+      working-directory: autogpt
+      run: |
+        kubectl apply --dry-run=client --validate -f deploy.yaml
