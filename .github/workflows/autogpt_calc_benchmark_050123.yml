@@ -72,3 +72,28 @@ jobs:
       with:
         name: post-run-state
         path: autogpt
+        
+    - name: Check gpt-calculator.py
+      run: |
+        echo "Contents of auto_gpt_workspace:"
+        ls /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/
+        if [[ ! -f /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt.py ]]; then
+          echo "Auto-GPT did not generate a calculator-gpt.py script this run, exiting."
+          exit 1
+        fi
+        echo "calculator-gpt.py script from this run:"
+        cat /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt.py
+        cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator-gpt.py /home/runner/work/calculator-gpt.py        
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
+
+    - name: Copy calculator-gpt files to the auto_gpt_workspace
+      run: |
+        cp /home/runner/work/calculator-gpt.py /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/calculator-gpt.py
+
+    - name: Test calculator-gpt.py script
+      run: |
+        bash test_calculator_gpt.sh
