@@ -65,4 +65,10 @@ jobs:
           "y -15"
           "n"
         )
-        printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only
+        printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
+
+    - name: Upload Auto-GPT repo post-run state as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: post-run-state
+        path: autogpt
