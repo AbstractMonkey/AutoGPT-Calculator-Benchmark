@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the test file name
-TEST_FILE="calculator-gpt-tests.txt"
+TEST_FILE="calculator-tests.txt"
 
 # Initialize counters for total tests and passed tests
 TOTAL_TESTS=0
@@ -13,7 +13,7 @@ while read -r line; do
     ((TOTAL_TESTS++))
 
     # Run the calculator-gpt.py with the current equation
-    GPT_RESULT=$(python calculator-gpt.py "$line")
+    GPT_RESULT=$(python calculator.py "$line")
 
     # Perform the same calculation using Bash and store the result
     BASH_RESULT=$(echo "$line" | bc)
@@ -34,10 +34,10 @@ while read -r line; do
         ((PASSED_TESTS++))
     else
         # Print the mismatched results for debugging
-        echo "Mismatch: calculator-gpt.py = $GPT_RESULT, Bash = $BASH_RESULT (Equation: $line)"
+        echo "Mismatch: calculator.py = $GPT_RESULT, Bash = $BASH_RESULT (Equation: $line)"
     fi
 done < "$TEST_FILE"
 
 # Calculate the success rate and print the results
 SUCCESS_RATE=$(echo "scale=2; ($PASSED_TESTS / $TOTAL_TESTS) * 100" | bc)
-echo "calculator-gpt passed tests: $PASSED_TESTS / $TOTAL_TESTS (Success rate: $SUCCESS_RATE%)"
+echo "Auto-GPT-generated calculator.py passed tests: $PASSED_TESTS / $TOTAL_TESTS (Success rate: $SUCCESS_RATE%)"
