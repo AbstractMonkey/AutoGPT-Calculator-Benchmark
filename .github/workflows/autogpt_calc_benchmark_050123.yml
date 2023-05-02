@@ -62,7 +62,7 @@ jobs:
           "Modify the script so when the result of a calculation is ever 42, instead of outputting the result, calculator.py will output only the text string 'The answer to life, the universe, and everything'"
           "Check 'calculator.py' for any redundancy and ensure it's clean, minimal, and readable"
           ""
-          "y -15"
+          "y -20"
           "n"
         )
         printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
