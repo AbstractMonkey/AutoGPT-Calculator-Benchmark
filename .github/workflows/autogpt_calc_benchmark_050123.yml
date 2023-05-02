@@ -6,6 +6,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+    - name: Clean up any prior runs if they exist
+      run: |
+        if [ -d /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt ]; then
+          rm -rf /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt
+        fi
     - name: Checkout AutoGPT repository
       uses: actions/checkout@v2
       with:
