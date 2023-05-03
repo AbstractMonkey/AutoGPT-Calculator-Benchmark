@@ -17,17 +17,21 @@ jobs:
         repository: Significant-Gravitas/Auto-GPT
         ref: v0.3.0
         path: autogpt
-        
+
     - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
+        cache: 'python310'
         
-    - name: Upgrade pip and install dependencies
-      working-directory: autogpt
+    - name: Upgrade Ubuntu & pip
       run: |
         sudo apt-get update && sudo apt-get dist-upgrade
         python -m pip install --upgrade pip
+        
+    - name: Install Auto-GPT requirements
+      working-directory: autogpt
+      run: |
         pip install -r requirements.txt
 
     - name: setup-docker
