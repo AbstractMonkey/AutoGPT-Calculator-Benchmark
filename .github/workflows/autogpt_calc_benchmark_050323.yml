@@ -93,6 +93,6 @@ jobs:
       run: |
         cp /home/runner/work/calculator.py /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/calculator.py
 
-    - name: Test calculator-gpt.py script
+    - name: Test calculator.py script
       run: |
         bash test_calculator.sh
