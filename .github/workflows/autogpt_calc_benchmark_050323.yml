@@ -51,11 +51,6 @@ jobs:
         ghUserName=${ghApiKey/your-github-username/${{ secrets.GH_USERNAME }}}
         echo "$ghUserName" > .env
 
-    - name: Create auto-gpt.json file
-      working-directory: autogpt
-      run: |
-        touch auto-gpt.json
-
     - name: Run AutoGPT command
       working-directory: autogpt
       run: |
