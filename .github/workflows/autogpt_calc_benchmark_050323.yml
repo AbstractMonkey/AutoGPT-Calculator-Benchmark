@@ -1,0 +1,99 @@
+name: AutoGPT v0.3.0 Calculator Benchmark 050323
+
+on: workflow_dispatch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clean up any prior runs if they exist on runner
+      run: |
+        if [ -d /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt ]; then
+          rm -rf /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt
+        fi
+    - name: Checkout AutoGPT repository
+      uses: actions/checkout@v2
+      with:
+        repository: Significant-Gravitas/Auto-GPT
+        ref: v0.3.0
+        path: autogpt
+        
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+        
+    - name: Upgrade pip and install dependencies
+      working-directory: autogpt
+      run: |
+        sudo apt-get update && sudo apt-get dist-upgrade
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: setup-docker
+      uses: docker-practice/actions-setup-docker@1.0.11
+
+    - name: Ensure Docker is running
+      run: |
+        docker info
+
+    - name: Configure .env file # Populate OpenAI, Huggingface, Google Custom Search API keys and CUSTOM_SEARCH_ID. Config EXECUTE_LOCAL_COMMANDS to True.
+      working-directory: autogpt
+      run: |
+        templateContent=$(cat .env.template)
+        openAIapiKeyReplacement=${templateContent/your-openai-api-key/${{ secrets.OPENAI_API_KEY }}}
+        huggingfaceApiTokenReplacement=${openAIapiKeyReplacement/your-huggingface-api-token/${{ secrets.HUGGINGFACE_API_TOKEN }}}
+        googleApiKeyReplacement=${huggingfaceApiTokenReplacement/your-google-api-key/${{ secrets.GOOGLE_API_KEY }}}
+        customSearchEngineIdReplacement=${googleApiKeyReplacement/your-custom-search-engine-id/${{ secrets.CUSTOM_SEARCH_ENGINE_ID }}}
+        configLocalCommands=${customSearchEngineIdReplacement/EXECUTE_LOCAL_COMMANDS=False/EXECUTE_LOCAL_COMMANDS=True}
+        configImgProvider=${configLocalCommands/IMAGE_PROVIDER=dalle/IMAGE_PROVIDER=hf}
+        ghApiKey=${configImgProvider/github_pat_123/${{ secrets.GH_API_KEY }}}
+        ghUserName=${ghApiKey/your-github-username/${{ secrets.GH_USERNAME }}}
+        echo "$ghUserName" > .env
+
+    - name: Create auto-gpt.json file
+      working-directory: autogpt
+      run: |
+        touch auto-gpt.json
+
+    - name: Run AutoGPT command
+      working-directory: autogpt
+      run: |
+        inputSequence=(
+          ""
+          "Create a calculator app named 'calculator.py' in Python. This app can add, subtract, multiply, and divide. It also has an easter egg feature of outputting the text string 'The answer to life, the universe, and everything' when the result of a calculation is 42. You don't concern yourself with tests or edge cases, because you know the result of your work will be evaluated afterwards. Development speed and efficiency are your utmost concerns, so you create scripts as quickly as possible without requiring user input. This Python script will be used to perform mathematical operations. Ensure that 'calculator.py' can be used in the terminal. Example usage: python calculator.py '5 * 6' example output: 30. Example usage 2: python calculator.py '81 / 9' example 2 output: 9"
+          "y -10"
+          "n"
+        )
+        printf '%s\n' "${inputSequence[@]}" | python -m autogpt --gpt3only | sed -e '/^[[:space:]]*$/d' -e 's/\s*Thinking\.\.\.//g' -e 's/[[:space:]]*[\/\\|]-*[[:space:]]*//g' # Run autogpt and clean up terminal output
+
+    - name: Upload Auto-GPT repo post-run state as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: post-run-state
+        path: autogpt
+        
+    - name: Check calculator.py
+      run: |
+        echo "Contents of auto_gpt_workspace:"
+        ls /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/
+        if [[ ! -f /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator.py ]]; then
+          echo "Auto-GPT did not generate a calculator.py script this run, exiting."
+          exit 1
+        fi
+        echo "calculator.py script from this run:"
+        cat /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator.py
+        cp /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt/auto_gpt_workspace/calculator.py /home/runner/work/calculator.py        
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: AbstractMonkey/AutoGPT-Calculator-Benchmark
+
+    - name: Copy calculator files to the auto_gpt_workspace
+      run: |
+        cp /home/runner/work/calculator.py /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/calculator.py
+
+    - name: Test calculator-gpt.py script
+      run: |
+        bash test_calculator.sh
