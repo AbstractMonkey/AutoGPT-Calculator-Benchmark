@@ -39,7 +39,7 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Setup Docker
+    - name: Setup Docker # Auto-GPT needs Docker to run its own tests using the alpine-python3 image
       uses: docker-practice/actions-setup-docker@1.0.11
 
     - name: Ensure Docker is running
