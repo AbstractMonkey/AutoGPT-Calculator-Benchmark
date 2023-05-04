@@ -74,7 +74,7 @@ jobs:
     - name: Upload auto_gpt_workspace contents as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: post-run-state-${{ github.run_id }}-$(date '+%Y%m%d%H%M%S')
+        name: post-run-state-${{ github.run_id }}-`$(date '+%Y%m%d%H%M%S')`
         path: autogpt/autogpt/auto_gpt_workspace
         
     - name: Check calculator.py
