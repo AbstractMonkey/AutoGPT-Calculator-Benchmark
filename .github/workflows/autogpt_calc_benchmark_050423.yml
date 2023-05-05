@@ -3,6 +3,10 @@ name: AutoGPT v0.3.0 Calculator Benchmark 050423
 on: 
   workflow_dispatch:
     inputs:
+      repo:
+        description: 'Source repo (necessary when testing a fork):'
+        required: true
+        default: 'Significant-Gravitas/Auto-GPT'
       ref:
         description: 'Version of Auto-GPT (branch or ref) to checkout:'
         required: true
@@ -26,7 +30,7 @@ jobs:
     - name: Checkout AutoGPT repository
       uses: actions/checkout@v2
       with:
-        repository: Significant-Gravitas/Auto-GPT
+        repository: ${{ github.event.inputs.repo }}
         ref: ${{ github.event.inputs.ref }}
         path: autogpt
           
