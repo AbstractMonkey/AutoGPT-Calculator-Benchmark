@@ -3,10 +3,15 @@ name: AutoGPT v0.3.0 Calculator Benchmark 050423
 on: 
   workflow_dispatch:
     inputs:
+      ref:
+        description: 'Version of Auto-GPT (branch or ref) to checkout:'
+        required: true
+        default: 'v0.3.0'
       python-version:
         description: 'Python version (3.10 or 3.11)'
         required: true
         default: '3.10'
+
 
 jobs:
   build-and-test:
@@ -17,13 +22,14 @@ jobs:
         if [ -d /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt ]; then
           rm -rf /home/runner/work/AutoGPT-Calculator-Benchmark/AutoGPT-Calculator-Benchmark/autogpt
         fi
+        
     - name: Checkout AutoGPT repository
       uses: actions/checkout@v2
       with:
         repository: Significant-Gravitas/Auto-GPT
-        ref: v0.3.0
+        ref: ${{ github.event.inputs.ref }}
         path: autogpt
-
+          
     - name: Set up Python ${{ github.event.inputs.python-version }}
       uses: actions/setup-python@v2
       with:
