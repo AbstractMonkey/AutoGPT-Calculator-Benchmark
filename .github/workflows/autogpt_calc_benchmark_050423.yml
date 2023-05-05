@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       repo:
-        description: 'Source repo (necessary when testing a fork):'
+        description: 'Source repo (alter when testing public fork):'
         required: true
         default: 'Significant-Gravitas/Auto-GPT'
       ref:
-        description: 'Version of Auto-GPT (branch or ref) to checkout:'
+        description: 'Branch/ref/version of Auto-GPT to checkout (use master when testing public fork):'
         required: true
         default: 'v0.3.0'
       python-version:
